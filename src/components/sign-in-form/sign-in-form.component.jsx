@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   SigInAuthUser,
-  createUserDocFromAuth,
   siginWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
@@ -13,9 +12,7 @@ const defaultValues = {
 };
 const SignInForm = () => {
   const [FormFields, setFormFields] = useState(defaultValues);
-
   const { email, password } = FormFields;
-
   const handleChange = (ev) => {
     const { name, value } = ev.target;
     setFormFields({ ...FormFields, [name]: value });
@@ -31,22 +28,19 @@ const SignInForm = () => {
       return;
     }
     try {
-      const { user } = await SigInAuthUser(email, password);
-console.log(user);
+      await SigInAuthUser(email, password);
       handleReset();
     } catch (error) {
       console.log(error);
     }
   };
   const logGoogleUser = async () => {
-    const { user } = await siginWithGooglePopup();
-    const userdocRef = await createUserDocFromAuth(user);
-    console.log(userdocRef);
+    await siginWithGooglePopup();
   };
 
   return (
     <div className="sign-in-container">
-         <h2>Already have an account</h2>
+      <h2>Already have an account</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -66,9 +60,7 @@ console.log(user);
           required
         />
         <div className="buttons-container">
-          <Button  type="submit">
-            Sign In
-          </Button>
+          <Button type="submit">Sign In</Button>
           <Button onClick={logGoogleUser} buttonType="google">
             Google Sign In
           </Button>

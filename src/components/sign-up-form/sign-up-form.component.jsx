@@ -36,6 +36,7 @@ const SignUpForm = () => {
       await createUserDocFromAuth(user, {
         displayName,
       });
+
       handleReset();
     } catch (error) {
       console.log(error);
